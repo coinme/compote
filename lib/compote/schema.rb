@@ -2,6 +2,18 @@ module Compote
 
   module Schema
 
+    resolve_relative_path = {
+
+      String => proc { | value, config |
+
+        value = config.get_path value if value.start_with? '.'
+
+        value
+
+      },
+
+    }
+
     wrap_string_in_array = {
 
       String => proc { | value |
@@ -80,6 +92,14 @@ module Compote
 
     }
 
+    env_files_mapping = {
+
+      String => wrap_string_in_array[ String ],
+
+      '*' => resolve_relative_path,
+
+    },
+
 
     MAPPINGS = {
 
@@ -87,7 +107,7 @@ module Compote
 
         'extends' => compote_extends_to_hash,
 
-        'env_file' => wrap_string_in_array,
+        'env_file' => env_files_mapping,
 
         'environment' => variables_array_to_hash,
 
@@ -133,13 +153,37 @@ module Compote
 
           'tmpfs' => wrap_string_in_array,
 
-          'env_file' => wrap_string_in_array,
+          'env_file' => env_files_mapping,
 
           'environment' => variables_array_to_hash,
 
           'labels' => labels_array_to_hash,
 
           'sysctls' => variables_array_to_hash,
+
+          'volumes' => {
+
+            '*' => {
+
+              String => proc { | value, config |
+
+                if value.start_with? '.'
+
+                  values = value.split ':'
+
+                  values[ 0 ] = config.get_path values[ 0 ]
+
+                  value = values.join ':'
+
+                end
+
+                value
+
+              },
+
+            },
+
+          },
 
           'compote' => {
 
@@ -186,7 +230,7 @@ module Compote
 
     end
 
-    def self.normalize ( value, mappings = MAPPINGS )
+    def self.normalize ( config, value, mappings = MAPPINGS )
 
       validate! value if mappings == MAPPINGS
 
@@ -200,7 +244,7 @@ module Compote
 
         class_mapping = class_mappings[ value.class ]
 
-        value = class_mapping.call value if class_mapping
+        value = class_mapping.call value, config if class_mapping
 
       end
 
@@ -217,7 +261,7 @@ module Compote
 
             value = value.map do | key, value |
 
-              [ key, normalize( value, path_mappings ) ]
+              [ key, normalize( config, value, path_mappings ) ]
 
             end.to_h
 
@@ -227,7 +271,7 @@ module Compote
 
             value = value.map do | value |
 
-              normalize value, path_mappings
+              normalize config, value, path_mappings
 
             end
 
@@ -241,7 +285,7 @@ module Compote
 
             if path_mappings
 
-              [ key, normalize( value, path_mappings ) ]
+              [ key, normalize( config, value, path_mappings ) ]
 
             else
 

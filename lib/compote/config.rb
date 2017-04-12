@@ -11,7 +11,7 @@ module Compote
 
       data = YAML.load_file file_name
 
-      data = Schema.normalize data
+      data = Schema.normalize self, data
 
       @data = apply_extends data
 
