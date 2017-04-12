@@ -2,7 +2,7 @@ require 'compote'
 
 require 'thor'
 
-require 'open3'
+require 'shellwords'
 
 
 module Compote
