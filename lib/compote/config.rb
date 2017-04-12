@@ -4,16 +4,16 @@ module Compote
 
     def initialize ( file_name )
 
+      @file_name = file_name
+
+      @directory_name = File.dirname file_name
+
+
       data = YAML.load_file file_name
 
       data = Schema.normalize data
 
       @data = apply_extends data
-
-
-      @file_name = file_name
-
-      @directory_name = File.dirname file_name
 
 
       @compose_settings = @data.reject { | key, value | %w( compote services ).include? key }
