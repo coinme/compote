@@ -32,12 +32,12 @@ Gem::Specification.new do | spec |
   spec.add_development_dependency 'rspec', '~> 3.0' # test framework - rspec/rspec
   spec.add_development_dependency 'aruba', '~> 0.14' # test framework - rspec/rspec
 
-  spec.add_development_dependency 'pry', '~> 0' # debug console - pry/pry
-  spec.add_development_dependency 'pry-rescue', '~> 0' # start debug on exception - conradirwin/pry-rescue
-  spec.add_development_dependency 'pry-stack_explorer', '~> 0' # moving in stack vertically - pry/pry-stack_explorer
-  spec.add_development_dependency 'pry-byebug', '~> 0' # moving in stack forward - deivid-rodriguez/pry-byebug
-  spec.add_development_dependency 'pry-inline', '~> 0' # view variables values inline - seikichi/pry-inline
-  spec.add_development_dependency 'pry-state', '~> 0' # view variables values - sudhagars/pry-state
-  spec.add_development_dependency 'pry-doc', '~> 0' # view ruby core classes documentation - pry/pry-doc
+  spec.add_development_dependency 'pry', '~> 0.10' # debug console - pry/pry
+  spec.add_development_dependency 'pry-rescue', '~> 1.4' # start debug on exception - conradirwin/pry-rescue
+  spec.add_development_dependency 'pry-stack_explorer', '~> 0.4' # moving in stack vertically - pry/pry-stack_explorer
+  spec.add_development_dependency 'pry-byebug', '~> 3.4' # moving in stack forward - deivid-rodriguez/pry-byebug
+  spec.add_development_dependency 'pry-inline', '~> 1.0' # view variables values inline - seikichi/pry-inline
+  spec.add_development_dependency 'pry-state', '~> 0.1' # view variables values - sudhagars/pry-state
+  spec.add_development_dependency 'pry-doc', '~> 0.10' # view ruby core classes documentation - pry/pry-doc
 
 end
